@@ -7,12 +7,14 @@ use uuid::Uuid;
 struct AuctionHouse {
     id: String,
     group: String,
+    #[serde(rename = "auction-feed")]
     endpoint: String,
 }
 
 #[derive(Deserialize, Serialize)]
 struct AuctionHouseCreator {
     group: String,
+    #[serde(rename = "auction-feed")]
     endpoint: String,
 }
 
