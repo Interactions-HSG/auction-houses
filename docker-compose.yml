@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  auction-houses:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: auction-houses
+    ports:
+      - 80:8030
+    restart: unless-stopped
+    environment:
+      - RUST_LOG=info
