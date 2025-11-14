@@ -1,0 +1,95 @@
+openapi: 3.0.0
+servers:
+  - description: Server
+    url: https://api.interactions.ics.unisg.ch/auction-houses
+info:
+  description: An auction house API for the ASSE course. This API allows you to create, delete, and retrieve auction houses.
+  version: "1.0.0"
+  title: Auction house API - ASSE Course - Interactions HSG
+  contact:
+    email: janliam.albert@unisg.ch
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+paths:
+  /:
+    get:
+      summary: Retrieves all auction houses
+      operationId: getAuctionHouses
+      description: |
+        Retrieves a JSON file with all auction houses.
+      responses:
+        '200':
+          description: Successfully retrieved all auction houses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AuctionHouse'
+        '204':
+          description: No auction houses exist
+    post:
+      summary: Adds an auction house
+      operationId: postAuctionHouse
+      description: Adds an auction house to the system and assigns it a new id in form of a uuid.
+      responses:
+        '201':
+          description: Auction house successfully created
+        '400':
+          description: 'invalid input, object invalid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuctionHouseCreator'
+        description: Auction house to add
+  /{id}:
+    delete:
+      summary: Deletes an auction house with the matching id
+      description: Deletes an auction house with the matching id if one is found
+      operationId: deleteAuctionHouse
+      parameters:
+      - name: id
+        in: path
+        description: The id of the auction house that should be deleted
+        required: true
+        schema:
+          type: string
+        example: 6dc1e80c14edf749e2ceb86d98ea1ca1
+      responses:
+        '204':
+          description: The auction house was successfully deleted
+        '404':
+          description: Invalid token, no such auction house
+components:
+  schemas:
+    AuctionHouse:
+      type: object
+      required:
+        - id
+        - group
+        - auction-feed
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        group:
+          type: string
+          example: group1
+        auction-feed:
+          type: string
+          example: 'example.com'
+    AuctionHouseCreator:
+      type: object
+      required:
+        - group
+        - auction-feed
+      properties:
+        group:
+          type: string
+          example: group1
+        auction-feed:
+          type: string
+          example: 'example.com'
